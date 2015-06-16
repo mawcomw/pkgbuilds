@@ -38,6 +38,8 @@ while [[ "${1}" != "" ]]; do
             ;;
         -a|--adopt)
             adopt=1
+            shift
+            package="${1}"
             ;;
         -s|--speedup)
             speedup=1
@@ -55,6 +57,11 @@ while [[ "${1}" != "" ]]; do
 done
 
 #### MAIN
+
+if [[ "${adopt}" = "1" ]]; then
+    git subtree add -P "${package}" aur:/${package}.git master
+    exit 0
+fi
 
 # push to legacy AUR. Remove this when AUR 4.0 takes over.
 burp ${package}/*.src.tar.gz
